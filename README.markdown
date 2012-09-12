@@ -58,7 +58,7 @@ For example, to load the **notifications.pl** script, type:
 
     /script load notifications
 
-## Unloading a Script from Irssi
+### Unloading a Script from Irssi
 
 To unload a script from Irssi, use the following command:
 
