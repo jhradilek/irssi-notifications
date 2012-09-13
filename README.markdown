@@ -4,7 +4,7 @@
 
 The **irssi-scripts** repository provides a collection of scripts for **Irssi**, an IRC client for the command line. In particular, it provides the following scripts:
 
-* **notifications.pl** — A script to notify the user about incoming messages by using desktop notifications.
+* **notifications.pl** — A script to notify the user about incoming messages by using desktop notifications. Note that the **Gtk2::Notify** module must be installed in order to use this script. In Fedora, this module is provided by the *perl-Gtk2-Notify* package; in Debian and Ubuntu, the package is named *libgtk2-notify-perl*.
 
 ## Installation
 
