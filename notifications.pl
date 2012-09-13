@@ -15,11 +15,15 @@
 
 use strict;
 use warnings;
+use Encode;
 use Gtk2::Notify -init, "Irssi";
 use Irssi;
 
+# The character encoding of the Irssi client:
+use constant ENCODING => "UTF-8";
+
 # General script information:
-our $VERSION  = '0.9.0';
+our $VERSION  = '0.9.1';
 our %IRSSI    = (
   name        => 'notifications',
   description => 'Notify the user about incoming messages.',
@@ -27,12 +31,16 @@ our %IRSSI    = (
   contact     => 'jhradilek@gmail.com',
   url         => 'https://github.com/jhradilek/irssi-scripts',
   license     => 'GNU General Public License, version 3',
-  changed     => '2012-09-12',
+  changed     => '2012-09-13',
 );
 
 # Display a GTK notification:
 sub display_notification {
   my ($summary, $body) = @_;
+
+  # Convert the strings to Perl's internal representation:
+  $summary = decode(ENCODING, $summary);
+  $body = decode(ENCODING, $body);
 
   # Display the notification:
   Gtk2::Notify->new($summary, $body, "im-message-new")->show();
@@ -58,7 +66,7 @@ sub message_public {
   my $tag = $server->{tag};
 
   # Prepare the message body:
-  (my $body = $message) =~ s/^$user[\s:.]\s*//;
+  (my $body = $message) =~ s/^$user[\s:,]\s*//;
 
   # Display the notification:
   display_notification("$nick/$tag on $target:", $body);
