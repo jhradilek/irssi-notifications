@@ -65,8 +65,15 @@ sub message_public {
   # Get the user's nick name:
   my $user = $server->{nick};
 
-  # Ignore messages that are not explicitly addressed to the user:
-  return if ($message !~ /^$user[\s:,]/);
+  # Check whether to notify the user about indirect messages:
+  unless (Irssi::settings_get_bool('notifications_indirect_messages')) {
+    # Ignore messages that are not explicitly addressed to the user:
+    return if ($message !~ /^$user[\s:,]/);
+  }
+  else {
+    # Ignore messages that do not mention the user:
+    return if ($message !~ /\b$user\b/);
+  }
 
   # Get the server's tag:
   my $tag = $server->{tag};
@@ -104,6 +111,7 @@ sub message_private {
 # Register configuration options:
 Irssi::settings_add_bool('notifications', 'notifications_private_messages', 1);
 Irssi::settings_add_bool('notifications', 'notifications_public_messages',  1);
+Irssi::settings_add_bool('notifications', 'notifications_indirect_messages',0);
 Irssi::settings_add_bool('notifications', 'notifications_active_window', 0);
 
 # Register signals:
