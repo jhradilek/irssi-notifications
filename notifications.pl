@@ -1,15 +1,15 @@
 # notifications, an Irssi script to notify the user about incoming messages
-# Copyright (C) 2012 Jaromir Hradilek
+# Copyright (C) 2012, 2013 Jaromir Hradilek
 
 # This program is free software;  you can redistribute it  and/or modify it
 # under the  terms of the  GNU General Public License  as published  by the
 # Free Software Foundation; version 3 of the License.
-# 
+#
 # This  program is  distributed  in the  hope that  it will be useful,  but
 # WITHOUT ANY WARRANTY;  without even the implied warranty of  MERCHANTABI-
 # LITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See  the  GNU General Public
 # License for more details.
-# 
+#
 # You should have received a copy of the  GNU General Public License  along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
@@ -23,7 +23,7 @@ use Irssi;
 use constant ENCODING => "UTF-8";
 
 # General script information:
-our $VERSION  = '0.9.1';
+our $VERSION  = '0.9.2';
 our %IRSSI    = (
   name        => 'notifications',
   description => 'Notify the user about incoming messages.',
@@ -31,7 +31,7 @@ our %IRSSI    = (
   contact     => 'jhradilek@gmail.com',
   url         => 'https://github.com/jhradilek/irssi-scripts',
   license     => 'GNU General Public License, version 3',
-  changed     => '2012-09-13',
+  changed     => '2013-02-08',
 );
 
 # Display a GTK notification:
@@ -50,11 +50,17 @@ sub display_notification {
 sub message_public {
   my ($server, $message, $nick, $address, $target) = @_;
 
-  # Get the name of the active window:
-  my $window = Irssi::active_win()->{active}->{name} || '';
+  # Check whether to notify the user about public messages:
+  return unless (Irssi::settings_get_bool('notifications_public_messages'));
 
-  # Ignore messages in the active window:
-  return if ($window eq $target);
+  # Check whether to notify the user about messages in the active window:
+  unless (Irssi::settings_get_bool('notifications_active_window')) {
+    # Get the name of the active window:
+    my $window = Irssi::active_win()->{active}->{name} || '';
+
+    # Ignore messages in the active window:
+    return if ($window eq $target);
+  }
 
   # Get the user's nick name:
   my $user = $server->{nick};
@@ -76,11 +82,17 @@ sub message_public {
 sub message_private {
   my ($server, $message, $nick, $address) = @_;
 
-  # Get the name of the active window:
-  my $window = Irssi::active_win()->{active}->{name} || '';
+  # Check whether to notify the user about public messages:
+  return unless (Irssi::settings_get_bool('notifications_public_messages'));
 
-  # Ignore messages in the active window:
-  return if ($window eq $nick);
+  # Check whether to notify the user about messages in the active window:
+  unless (Irssi::settings_get_bool('notifications_active_window')) {
+    # Get the name of the active window:
+    my $window = Irssi::active_win()->{active}->{name} || '';
+
+    # Ignore messages in the active window:
+    return if ($window eq $nick);
+  }
 
   # Get the server's tag:
   my $tag = $server->{tag};
@@ -88,6 +100,11 @@ sub message_private {
   # Display the notification:
   display_notification("$nick/$tag:", $message);
 }
+
+# Register configuration options:
+Irssi::settings_add_bool('notifications', 'notifications_private_messages', 1);
+Irssi::settings_add_bool('notifications', 'notifications_public_messages',  1);
+Irssi::settings_add_bool('notifications', 'notifications_active_window', 0);
 
 # Register signals:
 Irssi::signal_add('message public',  'message_public');
