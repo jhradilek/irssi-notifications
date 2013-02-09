@@ -81,7 +81,7 @@ sub message_public {
   # Prepare the message body:
   (my $body = $message) =~ s/^$user[\s:,]\s*//;
 
-  # Display the notification:
+  # Notify the user about the incoming public message:
   display_notification("$nick/$tag on $target:", $body);
 }
 
@@ -104,7 +104,7 @@ sub message_private {
   # Get the server's tag:
   my $tag = $server->{tag};
 
-  # Display the notification:
+  # Notify the user about the incoming private message:
   display_notification("$nick/$tag:", $message);
 }
 
@@ -124,8 +124,8 @@ sub dcc_request {
     return unless ($window);
   }
 
-  # Ignore DCC requests other than GET:
-  return unless ($dcc->{type} eq 'GET');
+  # Get the request type:
+  my $type = $dcc->{type};
 
   # Get the sender's nick:
   my $nick = $dcc->{nick};
@@ -133,12 +133,19 @@ sub dcc_request {
   # Get the server's tag:
   my $tag  = $dcc->{server}->{tag};
 
-  # Get the file name and size:
-  my $name = $dcc->{arg};
-  my $size = $dcc->{size};
+  # Check the request type:
+  if ($type eq 'GET') {
+    # Get the file name and size:
+    my $name = $dcc->{arg};
+    my $size = $dcc->{size};
 
-  # Display the notification:
-  display_notification("$nick/$tag offers a file:", "$name ($size B)");
+    # Notify the user about the incoming SEND request:
+    display_notification("$nick/$tag offers a file:", "$name ($size B)");
+  }
+  elsif ($type eq 'CHAT') {
+    # Notify the user about the incoming CHAT request:
+    display_notification("$nick/$tag offers a DCC chat.", "");
+  }
 }
 
 # Register configuration options:
