@@ -108,12 +108,47 @@ sub message_private {
   display_notification("$nick/$tag:", $message);
 }
 
+# Handle incoming DCC requests:
+sub dcc_request {
+  my ($dcc, $sendaddr) = @_;
+
+  # Check whether to notify the user about DCC requests:
+  return unless (Irssi::settings_get_bool('notifications_dcc_messages'));
+
+  # Check whether to notify the user about messages in the active window:
+  unless (Irssi::settings_get_bool('notifications_active_window')) {
+    # Get the name of the active window:
+    my $window = Irssi::active_win()->{active}->{name} || '';
+
+    # Ignore messages in the active window:
+    return unless ($window);
+  }
+
+  # Ignore DCC requests other than GET:
+  return unless ($dcc->{type} eq 'GET');
+
+  # Get the sender's nick:
+  my $nick = $dcc->{nick};
+
+  # Get the server's tag:
+  my $tag  = $dcc->{server}->{tag};
+
+  # Get the file name and size:
+  my $name = $dcc->{arg};
+  my $size = $dcc->{size};
+
+  # Display the notification:
+  display_notification("$nick/$tag offers a file:", "$name ($size B)");
+}
+
 # Register configuration options:
 Irssi::settings_add_bool('notifications', 'notifications_private_messages', 1);
 Irssi::settings_add_bool('notifications', 'notifications_public_messages',  1);
 Irssi::settings_add_bool('notifications', 'notifications_indirect_messages',0);
 Irssi::settings_add_bool('notifications', 'notifications_active_window', 0);
+Irssi::settings_add_bool('notifications', 'notifications_dcc_messages',  1);
 
 # Register signals:
 Irssi::signal_add('message public',  'message_public');
 Irssi::signal_add('message private', 'message_private');
+Irssi::signal_add('dcc request',     'dcc_request');
