@@ -23,7 +23,7 @@ use Irssi;
 use constant ENCODING => "UTF-8";
 
 # General script information:
-our $VERSION  = '0.9.2';
+our $VERSION  = '0.9.3';
 our %IRSSI    = (
   name        => 'notifications',
   description => 'Notify the user about incoming messages.',
@@ -31,7 +31,7 @@ our %IRSSI    = (
   contact     => 'jhradilek@gmail.com',
   url         => 'https://github.com/jhradilek/irssi-scripts',
   license     => 'GNU General Public License, version 3',
-  changed     => '2013-02-08',
+  changed     => '2013-02-09',
 );
 
 # Display a GTK notification:
@@ -82,7 +82,7 @@ sub message_public {
   (my $body = $message) =~ s/^$user[\s:,]\s*//;
 
   # Notify the user about the incoming public message:
-  display_notification("$nick/$tag on $target:", $body);
+  display_notification("Message from $nick/$tag on $target:", $body);
 }
 
 # Handle incoming private messages:
@@ -105,7 +105,7 @@ sub message_private {
   my $tag = $server->{tag};
 
   # Notify the user about the incoming private message:
-  display_notification("$nick/$tag:", $message);
+  display_notification("Message from $nick/$tag:", $message);
 }
 
 # Handle incoming DCC requests:
@@ -148,6 +148,32 @@ sub dcc_request {
   }
 }
 
+# Handle incoming DCC CHAT messages:
+sub dcc_chat_message {
+  my ($dcc, $message) = @_;
+
+  # Check whether to notify the user about DCC requests:
+  return unless (Irssi::settings_get_bool('notifications_dcc_messages'));
+
+  # Get the sender's nick:
+  my $nick = $dcc->{id};
+
+  # Check whether to notify the user about messages in the active window:
+  unless (Irssi::settings_get_bool('notifications_active_window')) {
+    # Get the name of the active window:
+    my $window = Irssi::active_win()->{active}->{name} || '';
+
+    # Ignore messages in the active window:
+    return if ($window eq "=$nick");
+  }
+
+  # Get the server's tag:
+  my $tag  = $dcc->{server}->{tag};
+
+  # Notify the user about the incoming CHAT message:
+  display_notification("DCC chat message from $nick/$tag:", $message);
+}
+
 # Register configuration options:
 Irssi::settings_add_bool('notifications', 'notifications_private_messages', 1);
 Irssi::settings_add_bool('notifications', 'notifications_public_messages',  1);
@@ -156,6 +182,7 @@ Irssi::settings_add_bool('notifications', 'notifications_active_window', 0);
 Irssi::settings_add_bool('notifications', 'notifications_dcc_messages',  1);
 
 # Register signals:
-Irssi::signal_add('message public',  'message_public');
-Irssi::signal_add('message private', 'message_private');
-Irssi::signal_add('dcc request',     'dcc_request');
+Irssi::signal_add('message public',   'message_public');
+Irssi::signal_add('message private',  'message_private');
+Irssi::signal_add('dcc request',      'dcc_request');
+Irssi::signal_add('dcc chat message', 'dcc_chat_message');
