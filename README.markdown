@@ -26,7 +26,7 @@ The script is loaded the next time you start the client.
 
 ### Loading the Script
 
-To load the **notifications** in Irssi, run the following Irssi command:
+To load the **notifications** script in Irssi, run the following Irssi command:
 
     /script load notifications
 
@@ -35,6 +35,41 @@ To load the **notifications** in Irssi, run the following Irssi command:
 To unload the **notifications** script from Irssi, run the following Irssi command:
 
     /script unload notifications
+
+### Filtering Notifications
+
+The **notifications** script provides a number of boolean variables that allow you to enable or disable certain behavior. To change the value of any of these variables, run the following Irssi command:
+
+    /set <variable_name> ON|OFF
+
+The available variables are as follows:
+
+<table>
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>notifications_private_messages</code></td>
+    <td>Enables notifications for private messages. The default value is <code>ON</code>.</td>
+  </tr>
+  <tr>
+    <td><code>notifications_public_messages<code></td>
+    <td>Enables notifications for messages in an IRC channel. The default value is <code>ON</code>.</td>
+  </tr>
+  <tr>
+    <td><code>notifications_indirect_messages</code></td>
+    <td>Enables notifications for messages that mention the user only indirectly. The default value is <code>OFF</code>.</td>
+  </tr>
+  <tr>
+    <td><code>notifications_active_window</code></td>
+    <td>Enables notifications for messages in an active window. The default value is <code>OFF</code>.</td>
+  </tr>
+  <tr>
+    <td><code>notifications_dcc_messages</code></td>
+    <td>Enables notifications for incoming DCC messages and DCC CHAT messages. The default value is <code>ON</code>.</td>
+  </tr>
+</table>
 
 ## Copyright
 
