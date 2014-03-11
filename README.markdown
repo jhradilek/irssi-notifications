@@ -1,75 +1,43 @@
-# Irssi Scripts
+# irssi-notifications
 
 ## Description
 
-The **irssi-scripts** repository provides a collection of scripts for **Irssi**, an IRC client for the command line. In particular, it provides the following scripts:
-
-* **notifications.pl** — A script to notify the user about incoming messages by using desktop notifications. Note that the **Gtk2::Notify** module must be installed in order to use this script. In Fedora, this module is provided by the *perl-Gtk2-Notify* package; in Debian and Ubuntu, the package is named *libgtk2-notify-perl*.
+The **notifications** script for Irssi uses desktop notifications to inform the user about incoming messages.
 
 ## Installation
 
-### Installing an Irssi Script
+**IMPORTANT:** A working installation of the **Gtk2::Notify** module for Perl is required for this script to function. In Fedora, this module is provided by the *perl-Gtk2-Notify* package; in Debian and Ubuntu, the package is named *libgtk2-notify-perl*.
 
-To install any of the scripts that are available in this repository, change into the directory with your local copy of the repository and type the following at a shell prompt:
+Irssi looks for additional scrips in the in the **~/.irssi/scripts/** directory. To make sure that this directory exists, type the following at a shell prompt:
 
-    cp <script>.pl ~/.irssi/scripts/
+    install -d ~/.irssi/scripts/autorun/
 
-For example, to install **notifications.pl**, type:
+To install the **notifications** script, change to the directory with your local copy of the repository and type:
 
     cp notifications.pl ~/.irssi/scripts/
 
-This copies the selected file to the **~/.irssi/scripts/** directory, in which all Irssi scripts are placed. In addition, you can configure Irssi to automatically load the script at startup. To do so, change into the **~/.irssi/scripts/autorun/** directory and create a symbolic link to the script by typing the following at a shell prompt:
-
-    ln -s ../<script>.pl
-
-For instance, to tell Irssi to automatically load **notifications.pl**, type:
+This copies the **notifications.pl** file to the **~/.irssi/scripts/** directory. You can also configure Irssi to load the script automatically at startup. To do so, change to the **~/.irssi/scripts/autorun/** directory and create a symbolic link to the script by running the following command:
 
     ln -s ../notifications.pl
 
 The script is loaded the next time you start the client.
 
-### Uninstalling an Irssi Script
-
-To uninstall an Irssi script, run the following command to remove it from the **~/.irssi/scripts/** directory:
-
-    rm ~/.irssi/scripts/<script>.pl
-
-For example, to uninstall **notifications.pl**, type:
-
-    rm ~/.irssi/scripts/notifications.pl
-
-In addition, if you previously configured Irssi to load the script automatically at startup, remove the respective symbolic link from the **~/.irssi/scripts/autorun/** directory by typing the following at a shell prompt:
-
-    rm ~/.irssi/scripts/autorun/<script>.pl
-
-For instance, to remove a symbolic link to the **notifications.pl** script, type:
-
-    rm ~/.irssi/scripts/autorun/notifications.pl
-
 ## Usage
 
-### Loading a Script in Irssi
+### Loading the Script
 
-To load a script in Irssi, use the following command:
-
-    /script load <script>
-
-For example, to load the **notifications.pl** script, type:
+To load the **notifications** in Irssi, run the following Irssi command:
 
     /script load notifications
 
-### Unloading a Script from Irssi
+### Unloading the Script
 
-To unload a script from Irssi, use the following command:
-
-    /script unload <script>
-
-For example, to unload the **notifications.pl** script, type:
+To unload the **notifications** script from Irssi, run the following Irssi command:
 
     /script unload notifications
 
 ## Copyright
 
-Copyright © 2012 Jaromir Hradilek
+Copyright © 2012, 2014 Jaromir Hradilek
 
 This program is free software; see the source for copying conditions. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
