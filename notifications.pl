@@ -1,5 +1,5 @@
 # notifications, an Irssi script to notify the user about incoming messages
-# Copyright (C) 2012, 2013 Jaromir Hradilek
+# Copyright (C) 2012, 2013, 2014 Jaromir Hradilek
 
 # This program is free software;  you can redistribute it  and/or modify it
 # under the  terms of the  GNU General Public License  as published  by the
@@ -29,9 +29,9 @@ our %IRSSI    = (
   description => 'Notify the user about incoming messages.',
   authors     => 'Jaromir Hradilek',
   contact     => 'jhradilek@gmail.com',
-  url         => 'https://github.com/jhradilek/irssi-scripts',
+  url         => 'https://github.com/jhradilek/irssi-notifications',
   license     => 'GNU General Public License, version 3',
-  changed     => '2013-02-09',
+  changed     => '2014-03-11',
 );
 
 # Display a GTK notification:
