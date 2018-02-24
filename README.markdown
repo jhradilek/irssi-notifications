@@ -6,7 +6,7 @@ The **notifications** script for Irssi uses desktop notifications to inform the 
 
 ## Installation
 
-**IMPORTANT:** A working installation of the **Gtk2::Notify** module for Perl is required for this script to function. In Fedora, this module is provided by the *perl-Gtk2-Notify* package; in Debian and Ubuntu, the package is named *libgtk2-notify-perl*.
+`notify-send` binary should be exists in your system.
 
 Irssi looks for additional scrips in the in the **~/.irssi/scripts/** directory. To make sure that this directory exists, type the following at a shell prompt:
 
