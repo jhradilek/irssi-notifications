@@ -16,14 +16,13 @@
 use strict;
 use warnings;
 use Encode;
-use Gtk2::Notify -init, "Irssi";
 use Irssi;
 
 # The character encoding of the Irssi client:
 use constant ENCODING => "UTF-8";
 
 # General script information:
-our $VERSION  = '0.9.3';
+our $VERSION  = '0.9.4';
 our %IRSSI    = (
   name        => 'notifications',
   description => 'Notify the user about incoming messages.',
@@ -43,7 +42,7 @@ sub display_notification {
   $body = decode(ENCODING, $body);
 
   # Display the notification:
-  Gtk2::Notify->new($summary, $body, "im-message-new")->show();
+  system('/usr/bin/notify-send', $summary, $body);
 }
 
 # Handle incoming public messages:
