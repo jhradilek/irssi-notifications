@@ -6,7 +6,7 @@ The **notifications** script for Irssi uses desktop notifications to inform the 
 
 ## Installation
 
-**IMPORTANT:** A working installation of the **Gtk2::Notify** module for Perl is required for this script to function. In Fedora, this module is provided by the *perl-Gtk2-Notify* package; in Debian and Ubuntu, the package is named *libgtk2-notify-perl*.
+**IMPORTANT:** A working installation of the **Net::DBus** module for Perl is required for this script to function. In Fedora, this module is provided by the *perl-Net-DBus* package. In Debian and Ubuntu, the package is named *libnet-dbus-perl*.
 
 Irssi looks for additional scrips in the in the **~/.irssi/scripts/** directory. To make sure that this directory exists, type the following at a shell prompt:
 
@@ -16,9 +16,9 @@ To install the **notifications** script, change to the directory with your local
 
     cp notifications.pl ~/.irssi/scripts/
 
-This copies the **notifications.pl** file to the **~/.irssi/scripts/** directory. You can also configure Irssi to load the script automatically at startup. To do so, change to the **~/.irssi/scripts/autorun/** directory and create a symbolic link to the script by running the following command:
+This copies the **notifications.pl** file to the **~/.irssi/scripts/** directory. You can also configure Irssi to load the script automatically at startup. To do so, create a symbolic link to that file in the **~/.irssi/scripts/autorun/** directory:
 
-    ln -s ../notifications.pl
+    ln -s ~/.irssi/scripts/{,autorun/}notifications.pl
 
 The script is loaded the next time you start the client.
 
@@ -73,6 +73,6 @@ The available variables are as follows:
 
 ## Copyright
 
-Copyright © 2012, 2014 Jaromir Hradilek
+Copyright © 2012, 2014, 2019 Jaromir Hradilek
 
 This program is free software; see the source for copying conditions. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
