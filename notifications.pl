@@ -1,5 +1,5 @@
 # notifications, an Irssi script to notify the user about incoming messages
-# Copyright (C) 2012, 2013, 2014 Jaromir Hradilek
+# Copyright (C) 2012, 2013, 2014, 2019 Jaromir Hradilek
 
 # This program is free software;  you can redistribute it  and/or modify it
 # under the  terms of the  GNU General Public License  as published  by the
@@ -16,7 +16,7 @@
 use strict;
 use warnings;
 use Encode;
-use Gtk2::Notify -init, "Irssi";
+use Net::DBus;
 use Irssi;
 
 # The character encoding of the Irssi client:
@@ -31,8 +31,17 @@ our %IRSSI    = (
   contact     => 'jhradilek@gmail.com',
   url         => 'https://github.com/jhradilek/irssi-notifications',
   license     => 'GNU General Public License, version 3',
-  changed     => '2014-03-11',
+  changed     => '2019-06-18',
 );
+
+# Get the session message bus handle:
+our $bus = Net::DBus->session;
+
+# Get the notifications service handle:
+our $service = $bus->get_service('org.freedesktop.Notifications');
+
+# Get the relevant object handle:
+our $object = $service->get_object('/org/freedesktop/Notifications');
 
 # Display a GTK notification:
 sub display_notification {
@@ -43,7 +52,8 @@ sub display_notification {
   $body = decode(ENCODING, $body);
 
   # Display the notification:
-  Gtk2::Notify->new($summary, $body, "im-message-new")->show();
+  $object->Notify('irssi-notifications', 0, 'im-message-new',
+                  $summary, $body, [], {}, 0);
 }
 
 # Handle incoming public messages:
